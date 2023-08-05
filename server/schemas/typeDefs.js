@@ -1,7 +1,7 @@
 const { gql } = require('apollo-server-express');
 
 // Create GraphQL typeDefs
-const typeDefs = gql`
+module.exports = gql`
     type User {
         _id: ID!
         username: String!

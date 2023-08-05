@@ -1,10 +1,11 @@
 const User = require('../models/User');
+const { ApolloError } = require('apollo-server-express');
 const Book = require('../models/Book');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const fetch = require('node-fetch');
 
-const resolvers = {
+module.exports = {
     Query: {
         // Query single user by id or username
         user: async (_, { id, username }) => {
@@ -42,7 +43,7 @@ const resolvers = {
             // Check if user already exists
             const oldUser = await User.findOne({ email, username });
             if (oldUser === email || oldUser === username) {
-                throw new Error('User already exists with that email or username!');
+                throw new ApolloError('User already exists with that email or username!');
             }
 
             // Encrypt user's password
@@ -91,7 +92,7 @@ const resolvers = {
                 return { id: user.id, ...user._doc };
                 // Else throw error if user doesn't exist or password is incorrect
             } else {
-                throw new Error("Incorrect email or password!");
+                throw new ApolloError("Incorrect email or password!");
             }
         },
 
@@ -126,5 +127,3 @@ const resolvers = {
         },
     },
 };
-
-module.exports = resolvers;
