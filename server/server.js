@@ -1,9 +1,10 @@
 require('dotenv').config();
-const express = require('express');
 const { ApolloServer } = require('apollo-server-express');
+const express = require('express');
 const path = require('path');
-
-const { typeDefs, resolvers } = require('./schemas');
+const typeDefs = require('./typeDefs');
+const resolvers = require('./resolvers');
+const { authenticate } = require('./auth');
 const mongoose = require('./config/connection');
 
 const app = express();
@@ -11,6 +12,11 @@ const app = express();
 const server = new ApolloServer({
   typeDefs,
   resolvers,
+  context: async ({ req }) => {
+    const token = req.headers.authorization || '';
+    const user = await authenticate(token);
+    return { user };
+  }
 });
 
 
