@@ -1,24 +1,30 @@
 import React from 'react';
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-import { ApolloClient, InMemoryCache, ApolloProvider } from '@apollo/client';
-import SearchBooks from './pages/SearchBooks';
-import SavedBooks from './pages/SavedBooks';
-import Navbar from './components/Navbar';
-import { Nav } from 'react-bootstrap';
+import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
+import { ApolloProvider } from '@apollo/client';
+import { AuthProvider } from './context/authContext'; 
+import client from './apolloClient'; 
 
-const client = new ApolloClient({
-  uri: '/graphql',
-  cache: new InMemoryCache(),
-});
+import Navbar from './components/Navbar'; 
+import SearchBooks from './pages/SearchBooks'; 
+import SavedBooks from './pages/SavedBooks'; 
+import LoginForm from './pages/LoginForm'; 
+import SignupForm from './pages/SignupForm'; 
 
 function App() {
   return (
-    <div >
-      <Navbar />
-      <Routes>
-        <Route path="/" element={<SearchBooks />} />
-      </Routes>
-    </div>
+    <ApolloProvider client={client}>
+      <AuthProvider>
+        <Router>
+          <Navbar />
+          <Routes>
+            <Route exact path="/" component={SearchBooks} />
+            <Route exact path="/saved" component={SavedBooks} />
+            <Route exact path="/login" component={LoginForm} />
+            <Route exact path="/signup" component={SignupForm} />
+          </Routes>
+        </Router>
+      </AuthProvider>
+    </ApolloProvider>
   );
 }
 

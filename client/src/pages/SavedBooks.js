@@ -1,13 +1,13 @@
-
 import React from 'react';
-import { useQuery, useMutation, gql } from '@apollo/client';
-import { GET_ME, REMOVE_BOOK } from './utils'; // Assuming the path is correct
-import { useAuth } from './authContext'; // Assuming the path is correct
+import { useMutation, useLazyQuery } from '@apollo/client';
+import { QUERY_ME } from './utils/queries';
+import { REMOVE_BOOK } from './utils/mutations';
+import { AuthContext } from './authContext';
 
 function SavedBooks() {
-  const { loading, data, error } = useQuery(GET_ME);
+  const { loading, data, error } = useLazyQuery(QUERY_ME);
   const [removeBook] = useMutation(REMOVE_BOOK);
-  const { user } = useAuth();
+  const { user } = AuthContext();
 
   if (loading) return <p>Loading...</p>;
   if (error) return <p>Error: {error.message}</p>;

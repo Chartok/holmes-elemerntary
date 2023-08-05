@@ -3,8 +3,8 @@ import React, { useState, useEffect } from 'react';
 // import { saveBookIds, getSavedBookIds } from '../utils/localStorage';
 import { useLazyQuery, useMutation, gql } from '@apollo/client';
 import { SAVE_BOOK } from '../utils/mutations';
-import { useQuery } from '../utils/hooks';
-import { useAuth } from '../context/authContext';
+import { useForm } from '../utils/hooks';
+import { AuthContext } from '../context/authContext';
 
 const SEARCH_BOOKS = gql`
   query SearchBooks($title: String!) {
@@ -20,7 +20,7 @@ const SEARCH_BOOKS = gql`
 `;
 
 const SearchBooks = () => {
-  const { query } = useQuery();
+  const { query } = useForm();
 
   const [search, setSearch] = useState(query || '');
 
@@ -28,7 +28,7 @@ const SearchBooks = () => {
 
   const [saveBook] = useMutation(SAVE_BOOK);
 
-  const { user } = useAuth();
+  const { user } = AuthContext();
 
   useEffect(() => {
     if (!search || !user) {
