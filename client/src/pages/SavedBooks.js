@@ -2,7 +2,7 @@ import React from 'react';
 import { useMutation, useLazyQuery } from '@apollo/client';
 import { QUERY_ME } from '../utils/queries';
 import { REMOVE_BOOK } from '../utils/mutations';
-import { useAuth } from '../authContext';
+import { useAuth } from '../context/authContext';
 
 function SavedBooks() {
   const { loading, data, error } = useLazyQuery(QUERY_ME);
