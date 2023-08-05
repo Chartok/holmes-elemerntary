@@ -1,5 +1,8 @@
-const { User } = require('../models');
-const signToken = require('../utils/auth');
+const User = require('../models/User');
+const Book = require('../models/Book');
+const bcrypt = require('bcrypt');
+const jwt = require('jsonwebtoken');
+const fetch = require('node-fetch');
 
 const resolvers = {
     Query: {
@@ -9,6 +12,28 @@ const resolvers = {
                 $or: [{ _id: id }, { username }],
             });
         },
+
+        // Query books from Google Books API
+        book: async (_, { query }) => {
+            const response = await fetch(`https://www.googleapis.com/books/v1/volumes?q=${query}`);
+            const res = await response.json();
+
+            if(!res) {
+                throw new Error('No books found!');
+            }
+
+            const bookData = res.items.map(({ book }) => ({
+                bookId: book.id,
+                authors: book.volumeInfo.authors,
+                description: book.volumeInfo.description,
+                title: book.volumeInfo.title,
+                image: book.volumeInfo.imageLinks?.thumbnail,
+                link: book.volumeInfo.infoLink,
+            }));
+
+            await Book.insertMany(bookData);
+            return bookData;
+        }
     },
     Mutation: {
         // Register new user with signed token and send it to client

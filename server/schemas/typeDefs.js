@@ -17,7 +17,7 @@ const typeDefs = gql`
         description: String
         title: String!
         image: String
-        url: String
+        link: String
     }
 
     input LoginInput {
@@ -38,11 +38,11 @@ const typeDefs = gql`
         description: String
         title: String!
         image: String
-        url: String
+        link: String
     }
 
     type Query {
-        book(term: String!): [Book!]!
+        book(query: String!): [Book!]!
         user(id: ID!): User!
     }
 
