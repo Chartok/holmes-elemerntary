@@ -1,5 +1,29 @@
 const mongoose = require('mongoose');
 
-mongoose.connect(process.env.MONGODB_URI || 'mongodb://127.0.0.1:27017/googlebooks');
+const options = {
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
+};
 
-module.exports = mongoose.connection;
+const connectToMongoDB = async () => {
+    try {
+        await mongoose.connect(process.env.MONGODB_URI, options);
+        console.log('Connected to MongoDB Atlas');
+    } catch (error) {
+        console.log('Failed to connect to Atlas', error);
+        console.log('Attmepting to connect to MongoDB locally');
+
+
+        try {
+            await mongoose.connect('mongodb://localhost:27017/', options);
+            console.log('Connected to MongoDB locally');
+        } catch (error) {
+            console.log('Failed to connect to MongoDB locally', error);
+            throw localError;
+        }
+    }
+};
+
+connectToMongoDB();
+
+module.exports = mongoose;
