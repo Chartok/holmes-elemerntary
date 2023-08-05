@@ -5,6 +5,7 @@ import { Form, Button, Container, Row, Col, Card } from 'react-bootstrap';
 import { useQuery, useMutation } from '@apollo/client';
 import { SAVE_BOOK } from '../utils/mutations';
 import { QUERY_BOOK } from '../utils/queries';
+import AuthContext from '../context/authContext';
 
 // SearchForm component
 const SearchForm = ({ searchInput, setSearchInput, handleFormSubmit }) => {
