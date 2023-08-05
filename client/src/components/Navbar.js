@@ -1,10 +1,10 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { Navbar, Nav, Container, Modal, Tab } from 'react-bootstrap';
-import SignUpForm from './SignupForm';
-import LoginForm from './LoginForm';
+import SignUpForm from '../pages/SignupForm';
+import LoginForm from '../pages/LoginForm';
 
-import Auth from '../utils/auth';
+import { AuthContext } from '../context/authContext';
 
 const AppNavbar = () => {
   // set modal display state
@@ -24,12 +24,12 @@ const AppNavbar = () => {
                 Search For Books
               </Nav.Link>
               {/* if user is logged in show saved books and logout */}
-              {Auth.loggedIn() ? (
+              {AuthContext.loggedIn() ? (
                 <>
                   <Nav.Link as={Link} to='/saved'>
                     See Your Books
                   </Nav.Link>
-                  <Nav.Link onClick={Auth.logout}>Logout</Nav.Link>
+                  <Nav.Link onClick={AuthContext.logout}>Logout</Nav.Link>
                 </>
               ) : (
                 <Nav.Link onClick={() => setShowModal(true)}>Login/Sign Up</Nav.Link>
