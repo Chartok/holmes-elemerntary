@@ -30,7 +30,7 @@ const SearchForm = ({ searchInput, setSearchInput, handleFormSubmit }) => {
 
 // BookList component
 const BookList = ({ searchedBooks, handleSaveBook, savedBookIds }) => {
-    // create state to hold saved bookId values
+  // create state to hold saved bookId values
   return (
     <Container>
       <h2 className='pt-5'>
@@ -177,7 +177,10 @@ const SearchBooks = () => {
         handleFormSubmit={handleFormSubmit}
       />
 
-      <BookList books={searchedBooks} handleSaveBook={handleSaveBook} setSavedBookIds={setSavedBookIds} />
+      <BookList books={searchedBooks}
+        handleSaveBook={handleSaveBook}
+        setSavedBookIds={setSavedBookIds}
+      />
 
     </>
   );
