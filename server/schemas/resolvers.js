@@ -15,8 +15,8 @@ module.exports = {
         },
 
         // Query books from Google Books API
-        book: async (_, { query }) => {
-            const response = await fetch(`https://www.googleapis.com/books/v1/volumes?q=${query}`);
+        searchBooks: async (_, { query }) => {
+            const response = await fetch('https://www.googleapis.com/books/v1/volumes');
             const res = await response.json();
 
             if(!res) {

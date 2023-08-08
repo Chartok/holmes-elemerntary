@@ -12,7 +12,7 @@ module.exports = gql`
     }
 
     type Book {
-        bookId: ID!
+        bookId: String!
         authors: [String]
         description: String
         title: String!
@@ -42,7 +42,7 @@ module.exports = gql`
     }
 
     type Query {
-        book(term: String!): [Book!]!
+        searchBooks(query: String!): [Book]
         user(id: ID!): User!
     }
 
