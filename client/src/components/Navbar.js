@@ -1,43 +1,46 @@
-import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
-import { Navbar, Nav, Container, Modal, Tab } from 'react-bootstrap';
-import SignUpForm from '../pages/SignupForm';
-import LoginForm from '../pages/LoginForm';
+import { Appbar, Box, Button, Toolbar, Typography } from "@material-ui/core";
+import { AuthContext } from "../utils/authContext";
+import { useContext } from "react";
+import { Link, useNavigate } from "react-router-dom";
 
-import { useAuth } from '../context/authContext';
 
-const AppNavbar = () => {
-  // set modal display state
-  const [showModal, setShowModal] = useState(false);
-  const auth = useAuth();
+function Navbar () {
+  let navigate = useNavigate();
+  const { user, logout } = useContext(AuthContext);
+
+  const onLogout = () => {
+    logout();
+    navigate("/");
+  };
 
   return (
-    <>
-    <nav className="navbar navbar-expand-lg navbar-light bg-light">
-    <div className="container-fluid">
-      <Link className="navbar-brand" to="/">
-        Google Books
-      </Link>
-      <div>
-        {auth.loggedIn ? (
-          <>
-            <Link className="btn btn-danger m-2" to="/saved">
-              See Your Books
-            </Link>
-            <button className="btn btn-danger m-2" onClick={auth.logout}>
-              Logout
-            </button>
-          </>
-        ) : (
-          <button className="btn btn-success m-2" onClick={auth.login}>
-            Login
-          </button>
-        )}
-      </div>
-    </div>
-  </nav>
-    </>
+    <Box sx={{ flexGrow: 1 }}>
+      <Appbar position="static">
+        <Toolbar>
+          <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
+            <Link to="/" style={{ textDecoration: "none", color: "white" }}>Home</Link>
+            <link to="/login" style={{ textDecoration: "none", color: "white" }}>Login</link>
+            <link to="/register" style={{ textDecoration: "none", color: "white" }}>Register</link>
+            <link to="/searchBooks" style={{ textDecoration: "none", color: "white" }}>Search Books</link>
+            <link to="/savedBooks" style={{ textDecoration: "none", color: "white" }}>Saved Books</link>
+          </Typography>
+          <Box alightitems="right" sx={{ flexGrow: 1, textAlign: "right" }}>
+            {/** If user is logged in, show logout button, else show login and register buttons */}
+            {user ? 
+              <>
+                <Button style={{ textDecoration: "none", color: "white" }} onClick={onLogout}>Logout</Button>
+              </>
+              :
+              <>
+                <Button style={{ textDecoration: "none", color: "white" }} component={Link} to="/login">Login</Button>
+                <Button style={{ textDecoration: "none", color: "white" }} component={Link} to="/register">Register</Button>
+              </>
+            }
+          </Box>
+        </Toolbar>
+      </Appbar>
+    </Box>
   );
 };
 
-export default AppNavbar;
+export default Navbar;
