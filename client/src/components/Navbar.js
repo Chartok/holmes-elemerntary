@@ -19,10 +19,10 @@ function Navbar () {
         <Toolbar>
           <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
             <Link to="/" style={{ textDecoration: "none", color: "white" }}>Home</Link>
-            <link to="/login" style={{ textDecoration: "none", color: "white" }}>Login</link>
-            <link to="/signup" style={{ textDecoration: "none", color: "white" }}>Register</link>
-            <link to="/searchBooks" style={{ textDecoration: "none", color: "white" }}>Search Books</link>
-            <link to="/savedBooks" style={{ textDecoration: "none", color: "white" }}>Saved Books</link>
+            <Link to="/login" style={{ textDecoration: "none", color: "white" }}>Login</Link>
+            <Link to="/signup" style={{ textDecoration: "none", color: "white" }}>Register</Link>
+            <Link to="/searchBooks" style={{ textDecoration: "none", color: "white" }}>Search Books</Link>
+            <Link to="/savedBooks" style={{ textDecoration: "none", color: "white" }}>Saved Books</Link>
           </Typography>
           <Box alightitems="right" sx={{ flexGrow: 1, textAlign: "right" }}>
             {/** If user is logged in, show logout button, else show login and register buttons */}

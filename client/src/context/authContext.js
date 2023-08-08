@@ -1,4 +1,4 @@
-import React, { createContext, useReducer, useContext } from 'react';
+import React, { createContext, useReducer } from 'react';
 import jwtDecode from 'jwt-decode';
 
 const initialState = {
@@ -61,10 +61,6 @@ function AuthProvider(props) {
             {...props}
         />
     );
-}
-
-export function useAuth() {
-    return useContext(AuthContext);
 }
 
 export { AuthContext, AuthProvider };
