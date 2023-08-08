@@ -3,7 +3,7 @@ const { ApolloError } = require('apollo-server-express');
 const Book = require('../models/Book');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
-const fetch = require('node-fetch');
+const axios = require('axios');
 
 module.exports = {
     Query: {
@@ -16,7 +16,7 @@ module.exports = {
 
         // Query books from Google Books API
         searchBooks: async (_, { query }) => {
-            const response = await fetch('https://www.googleapis.com/books/v1/volumes');
+            const response = await axios.get('https://www.googleapis.com/books/v1/volumes');
             const res = await response.json();
 
             if(!res) {
