@@ -1,14 +1,13 @@
-import React, { useState, useEffect } from 'react';
-
-import { useLazyQuery, useMutation, gql } from '@apollo/client';
-import { SAVE_BOOK } from '../utils/mutations';
+import { useState } from 'react';
+import { Container, Box, TextField, Button, Typography, Link, List, ListItem } from '@mui/material';
 import { useForm } from '../utils/hooks';
-import { AuthProvider } from '../context/authContext';
+import { useQuery, useMutation, gql } from '@apollo/client';
+import { SAVE_BOOK } from '../utils/mutations';
 
 const SEARCH_BOOKS = gql`
-  query SearchBooks($title: String!) {
-    searchBooks(title: $title) {
-      id
+  query SearchBooks($query: String!) {
+    searchBooks(query: $title) {
+      bookId
       title
       authors
       description
@@ -18,52 +17,76 @@ const SEARCH_BOOKS = gql`
   }
 `;
 
-const SearchBooks = () => {
-  const { query } = useForm();
-
-  const [search, setSearch] = useState(query || '');
-
-  const [searchBooks, { loading, data }] = useLazyQuery(SEARCH_BOOKS);
-
+function SearchBooks() {
+  const [searchedBooks, setSearchedBooks] = useState([]);
   const [saveBook] = useMutation(SAVE_BOOK);
-
-  const { user } = AuthProvider();
-
-  useEffect(() => {
-    if (!search || !user) {
-      return;
+  const searchBookCallback = () => {
+    if (data) {
+      setSearchedBooks(data.searchBooks);
     }
-    searchBooks({ variables: { title: search } });
-  }, [search, searchBooks, user]);
-
+  };
+  const { onChange, onSubmit, values } = useForm(searchBookCallback, {
+    searchInput: '',
+  });
+  const { searchInput } = values;
+  
+  const { loading, error, data } = useQuery(SEARCH_BOOKS, {
+    variables: { query: searchInput },
+  });
   return (
-    <div>
-      <form onSubmit={(e) => e.preventDefault()}>
-        <input
-          className="form-input"
-          placeholder="Search for a book"
-          name="search"
-          type="text"
-          value={search}
-          onChange={(e) => setSearch(e.target.value)}
-        />
-        <button type="submit" onClick={() => setSearch(search)}>
-          Search
-        </button>
-      </form>
-      {/* Display the search results */}
-      {loading && <div>Loading...</div>}
-      {data?.searchBooks?.map((book) => (
-        <div key={book.id}>
-          <h3>{book.title}</h3>
-          <p>{book.description}</p>
-          <button onClick={() => saveBook({ variables: { input: book } })}>
-            Save
-          </button>
-        </div>
-      ))}
-    </div>
+    <Container maxWidth="md">
+      <Box my={4}>
+        <Typography variant="h4" component="h1" gutterBottom>
+          Search for Books!
+        </Typography>
+        <form onSubmit={onSubmit}>
+          <TextField
+            fullWidth
+            name='searchInput'
+            label="Search for a book"
+            value={values.searchInput}
+            onChange={onChange}
+          />
+          <Button
+            variant="contained"
+            color="primary"
+            disabled={!values.searchInput}
+            onClick={onSubmit}
+          >
+            Submit Book Search
+          </Button>
+        </form>
+      </Box>
+      <Box my={4}>
+        {loading ? (
+          <Typography variant="h5">Loading...</Typography>
+        ) : error ? (
+          <Typography variant="h5">Error: {error.message}</Typography>
+        ) : (
+          <List>
+            {searchedBooks.map((book) => (
+              <ListItem key={book.bookId}>
+                <Link href={book.link}>
+                  <Typography>
+                    <strong>
+                      {book.title} by {book.authors.join(', ')}
+                    </strong>
+                  </Typography>
+                </Link>
+                <Button
+                  variant="outlined"
+                  color="primary"
+                  onClick={() => saveBook(book)}
+                >
+                  Save
+                </Button>
+              </ListItem>
+            ))}
+          </List>
+        )}
+      </Box>
+    </Container>
   );
-};
+}
 
 export default SearchBooks;
