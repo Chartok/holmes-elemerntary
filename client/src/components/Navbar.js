@@ -20,7 +20,7 @@ function Navbar () {
           <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
             <Link to="/" style={{ textDecoration: "none", color: "white" }}>Home</Link>
             <link to="/login" style={{ textDecoration: "none", color: "white" }}>Login</link>
-            <link to="/register" style={{ textDecoration: "none", color: "white" }}>Register</link>
+            <link to="/signup" style={{ textDecoration: "none", color: "white" }}>Register</link>
             <link to="/searchBooks" style={{ textDecoration: "none", color: "white" }}>Search Books</link>
             <link to="/savedBooks" style={{ textDecoration: "none", color: "white" }}>Saved Books</link>
           </Typography>
@@ -33,7 +33,7 @@ function Navbar () {
               :
               <>
                 <Button style={{ textDecoration: "none", color: "white" }} component={Link} to="/login">Login</Button>
-                <Button style={{ textDecoration: "none", color: "white" }} component={Link} to="/register">Register</Button>
+                <Button style={{ textDecoration: "none", color: "white" }} component={Link} to="/signup">Register</Button>
               </>
             }
           </Box>
