@@ -5,7 +5,7 @@ import App from './App';
 import client from './apolloClient';
 import { ApolloProvider } from '@apollo/client';
 import { BrowserRouter } from 'react-router-dom';
-import { AuthProvider } from './utils/authContext';
+import { AuthProvider } from './context/authContext';
 
 
 const root = ReactDOM.createRoot(document.getElementById('root'));

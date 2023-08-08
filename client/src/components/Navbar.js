@@ -1,5 +1,5 @@
-import { Appbar, Box, Button, Toolbar, Typography } from "@material-ui/core";
-import { AuthContext } from "../utils/authContext";
+import { AppBar, Box, Button, Toolbar, Typography } from "@mui/material";
+import { AuthContext } from "../context/authContext";
 import { useContext } from "react";
 import { Link, useNavigate } from "react-router-dom";
 
@@ -15,7 +15,7 @@ function Navbar () {
 
   return (
     <Box sx={{ flexGrow: 1 }}>
-      <Appbar position="static">
+      <AppBar position="static">
         <Toolbar>
           <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
             <Link to="/" style={{ textDecoration: "none", color: "white" }}>Home</Link>
@@ -38,7 +38,7 @@ function Navbar () {
             }
           </Box>
         </Toolbar>
-      </Appbar>
+      </AppBar>
     </Box>
   );
 };
