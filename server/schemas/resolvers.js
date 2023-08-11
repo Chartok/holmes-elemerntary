@@ -16,20 +16,24 @@ module.exports = {
 
         // Query books from Google Books API
         searchBooks: async (_, { query }) => {
-            const response = await axios.get('https://www.googleapis.com/books/v1/volumes');
-            const res = await response.json();
+            const response = await axios.get('https://www.googleapis.com/books/v1/volumes', {
+                params: {
+                    q: query,
+                    key: process.env.GOOGLE_BOOKS_API_KEY,
+                },
+            });
 
-            if(!res) {
+            if(!response.data) {
                 throw new Error('No books found!');
             }
 
-            const bookData = res.items.map(({ book }) => ({
-                bookId: book.id,
-                authors: book.volumeInfo.authors,
-                description: book.volumeInfo.description,
-                title: book.volumeInfo.title,
-                image: book.volumeInfo.imageLinks?.thumbnail,
-                link: book.volumeInfo.infoLink,
+            const bookData = response.data.items.map(({ item }) => ({
+                bookId: item.id,
+                authors: item.volumeInfo.authors,
+                description: item.volumeInfo.description,
+                title: item.volumeInfo.title,
+                image: item.volumeInfo.imageLinks?.thumbnail,
+                link: item.volumeInfo.infoLink,
             }));
 
             await Book.insertMany(bookData);
