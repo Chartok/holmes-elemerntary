@@ -19,7 +19,6 @@ module.exports = {
             const response = await axios.get('https://www.googleapis.com/books/v1/volumes', {
                 params: {
                     q: query,
-                    key: process.env.GOOGLE_BOOKS_API_KEY,
                 },
             });
 
@@ -27,7 +26,7 @@ module.exports = {
                 throw new Error('No books found!');
             }
 
-            const bookData = response.data.items.map(({ item }) => ({
+            const bookData = response.data.items.map((item) => ({
                 bookId: item.id,
                 authors: item.volumeInfo.authors,
                 description: item.volumeInfo.description,
