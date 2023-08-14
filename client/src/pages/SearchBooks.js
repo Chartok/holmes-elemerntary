@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { Container, Box, TextField, Button, Typography, Link, List, ListItem } from '@mui/material';
 import { useForm } from '../utils/hooks';
-import { useQuery, useMutation, gql } from '@apollo/client';
+import { useLazyQuery, useMutation, gql } from '@apollo/client';
 import { SAVE_BOOK } from '../utils/mutations';
 
 const SEARCH_BOOKS = gql`
@@ -29,8 +29,8 @@ function SearchBooks() {
     searchInput: '',
   });
   const { searchInput } = values;
-  
-  const { loading, error, data } = useQuery(SEARCH_BOOKS, {
+
+  const { loading, error, data } = useLazyQuery(SEARCH_BOOKS, {
     variables: { query: searchInput },
   });
   return (
