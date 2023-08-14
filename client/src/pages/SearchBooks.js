@@ -1,24 +1,12 @@
-import { useState } from 'react';
+import React, { useState } from 'react';
 import { Container, Box, TextField, Button, Typography, Link, List, ListItem } from '@mui/material';
 import { useForm } from '../utils/hooks';
 import { useLazyQuery, useMutation, gql } from '@apollo/client';
 import { SAVE_BOOK } from '../utils/mutations';
-
-const SEARCH_BOOKS = gql`
-  query SearchBooks($query: String!) {
-    searchBooks(query: $title) {
-      bookId
-      title
-      authors
-      description
-      image
-      link
-    }
-  }
-`;
+import { SEARCH_BOOKS } from '../utils/queries';
 
 function SearchBooks() {
-  const [searchedBooks, setSearchedBooks] = useState([]);
+  const [searchBooks, { loading, data }] = useLazyQuery(SEARCH_BOOKS);
   const [saveBook] = useMutation(SAVE_BOOK);
   const searchBookCallback = () => {
     if (data) {
