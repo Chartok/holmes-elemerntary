@@ -1,26 +1,22 @@
-import React, { useState } from 'react';
-import { Container, Box, TextField, Button, Typography, Link, List, ListItem } from '@mui/material';
+import React from 'react';
+import { Alert, Container, Box, TextField, Button, Typography, Link, List, ListItem } from '@mui/material';
 import { useForm } from '../utils/hooks';
-import { useLazyQuery, useMutation, gql } from '@apollo/client';
+import { useLazyQuery, useMutation } from '@apollo/client';
 import { SAVE_BOOK } from '../utils/mutations';
 import { SEARCH_BOOKS } from '../utils/queries';
 
 function SearchBooks() {
-  const [searchBooks, { loading, data }] = useLazyQuery(SEARCH_BOOKS);
+  const [searchBooks, { loading, error, data }] = useLazyQuery(SEARCH_BOOKS);
   const [saveBook] = useMutation(SAVE_BOOK);
-  const searchBookCallback = () => {
-    if (data) {
-      setSearchedBooks(data.searchBooks);
-    }
+
+  const search = () => {
+    searchBooks({ variables: { query: values.searchInput } });
   };
-  const { onChange, onSubmit, values } = useForm(searchBookCallback, {
+
+  const { onChange, onSubmit, values } = useForm(search, {
     searchInput: '',
   });
-  const { searchInput } = values;
 
-  const { loading, error, data } = useLazyQuery(SEARCH_BOOKS, {
-    variables: { query: searchInput },
-  });
   return (
     <Container maxWidth="md">
       <Box my={4}>
@@ -38,7 +34,7 @@ function SearchBooks() {
           <Button
             variant="contained"
             color="primary"
-            disabled={!values.searchInput}
+            type="submit"
             onClick={onSubmit}
           >
             Submit Book Search
@@ -46,13 +42,16 @@ function SearchBooks() {
         </form>
       </Box>
       <Box my={4}>
-        {loading ? (
-          <Typography variant="h5">Loading...</Typography>
-        ) : error ? (
-          <Typography variant="h5">Error: {error.message}</Typography>
-        ) : (
+
+        {loading && <Typography variant="body1">Loading...</Typography>}
+
+        {error && <Alert severity="error" sx={{ mt: 2 }}>
+          An error occurred: {error.message}
+        </Alert>}
+
+        {data?.searchBooks && (
           <List>
-            {searchedBooks.map((book) => (
+            {data.searchBooks.map((book) => (
               <ListItem key={book.bookId}>
                 <Link href={book.link}>
                   <Typography>
@@ -71,10 +70,11 @@ function SearchBooks() {
               </ListItem>
             ))}
           </List>
+
         )}
+
       </Box>
     </Container>
   );
 }
-
 export default SearchBooks;
