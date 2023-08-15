@@ -14,6 +14,11 @@ module.exports = {
             });
         },
 
+        // Query saved books
+        savedBooks: async (_, {}) => {
+            return await Book.find();
+        },
+
         // Query books from Google Books API
         searchBooks: async (_, { query }) => {
             const response = await axios.get('https://www.googleapis.com/books/v1/volumes', {

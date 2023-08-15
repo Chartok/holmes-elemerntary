@@ -30,3 +30,16 @@ export const SEARCH_BOOKS = gql`
         }
     }
 `;
+
+export const GET_SAVED_BOOKS = gql`
+    query GetSavedBooks {
+        savedBooks {
+            bookId
+            authors
+            description
+            title
+            image
+            link
+        }
+    }
+`;

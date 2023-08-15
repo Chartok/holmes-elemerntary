@@ -13,6 +13,10 @@ function SearchBooks() {
     searchBooks({ variables: { query: values.searchInput } });
   };
 
+  const handleSaveBook = (userId, book) => {
+    saveBook({ variables: { userId, input: book } });
+  };
+
   const { onChange, onSubmit, values } = useForm(search, {
     searchInput: '',
   });
@@ -65,7 +69,7 @@ function SearchBooks() {
                 <Button
                   variant="outlined"
                   color="primary"
-                  onClick={() => saveBook(book)}
+                  onClick={() => handleSaveBook(book)}
                 >
                   Save
                 </Button>

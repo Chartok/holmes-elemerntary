@@ -43,6 +43,7 @@ module.exports = gql`
 
     type Query {
         searchBooks(query: String!): [Book]
+        savedBooks: [Book]
         user(id: ID!): User!
     }
 

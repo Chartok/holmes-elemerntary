@@ -1,30 +1,43 @@
 import React from 'react';
-import { useMutation, useLazyQuery } from '@apollo/client';
-import { QUERY_ME } from '../utils/queries';
+import { useMutation, useQuery } from '@apollo/client';
+import { GET_SAVED_BOOKS } from '../utils/queries';
 import { REMOVE_BOOK } from '../utils/mutations';
-import { AuthProvider } from '../context/authContext';
+import { Alert, Container, List, ListItem, Button, Link, Typography } from '@mui/material';
 
 function SavedBooks() {
-  const { loading, data, error } = useLazyQuery(QUERY_ME);
-  const [removeBook] = useMutation(REMOVE_BOOK);
-  const { user } = AuthProvider();
+  const { loading, data, error } = useQuery(GET_SAVED_BOOKS);
+  const [removeBook] = useMutation(REMOVE_BOOK, {
+    update(cache, { data: { removeBook } }) {
+      const existingBooks = cache.readQuery({ query: GET_SAVED_BOOKS });
+      const updatedBooks = existingBooks.savedBooks.filter((book) => book.bookId !== removeBook.bookId);
+      cache.writeQuery({
+        query: GET_SAVED_BOOKS,
+        data: { savedBooks: updatedBooks },
+      });
+    },
+  });
 
-  if (loading) return <p>Loading...</p>;
-  if (error) return <p>Error: {error.message}</p>;
+  const handleRemoveBook = async (bookId) => {
+    removeBook({ variables: { bookId } });
+  };
+
+  if (loading) return <Typography variant="body1">Loading...</Typography>;
+  if (error) return <Alert severity='error'>Error: {error.message}</Alert>;
 
   return (
-    <div>
-      <h2>Saved Books</h2>
-      {data?.me?.savedBooks?.map((book) => (
-        <div key={book.bookId}>
-          <h3>{book.title}</h3>
-          <p>{book.description}</p>
-          <button onClick={() => removeBook({ variables: { bookId: book.bookId } })}>
-            Remove
-          </button>
-        </div>
-      ))}
-    </div>
+    <Container>
+      <Typography variant='h3'>Saved Books</Typography>
+      <List>
+        {data.savedBooks.map((book) => (
+          <ListItem key={book.bookId}>
+            <Typography variant='h5'>{book.title}</Typography>
+            <img src={book.image} alt={book.title} />
+            <Link href={book.link}>More Info</Link>
+            <Button variant='contained' color='secondary' onClick={() => handleRemoveBook(book.bookId)}>Remove Book</Button>
+          </ListItem>
+        ))}
+      </List>
+    </Container>
   );
 }
 
