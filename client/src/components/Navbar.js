@@ -18,7 +18,7 @@ function Navbar () {
       <AppBar position="static">
         <Toolbar>
           <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
-            <Link to="/" style={{ textDecoration: "none", color: "white" }}>Home </Link>
+            <Link to="/home" style={{ textDecoration: "none", color: "white" }}>Home </Link>
             <Link to="/login" style={{ textDecoration: "none", color: "white" }}> Login</Link>
             <Link to="/signup" style={{ textDecoration: "none", color: "white" }}> Register</Link>
             <Link to="/searchBooks" style={{ textDecoration: "none", color: "white" }}> SearchBooks</Link>
