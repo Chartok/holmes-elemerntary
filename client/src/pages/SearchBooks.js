@@ -54,16 +54,18 @@ function SearchBooks() {
             {data.searchBooks.map((book) => (
               <ListItem key={book.bookId}>
                 <Link href={book.link}>
-                  <Typography>
-                    <strong>
-                      {book.title} by {book.authors.join(', ')}
-                    </strong>
+                  <img src={book.image} alt={book.title} />
+                  <Typography variant="body1">
+                    <strong>Description:</strong> {book.description}
+                  </Typography>
+                  <Typography variant="body1">
+                    <strong>Authors:</strong> {book.authors.join(', ')}
                   </Typography>
                 </Link>
                 <Button
                   variant="outlined"
                   color="primary"
-                  onClick={(onChange) => saveBook(book)}
+                  onClick={() => saveBook(book)}
                 >
                   Save
                 </Button>
