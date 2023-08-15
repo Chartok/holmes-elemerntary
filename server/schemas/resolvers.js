@@ -105,7 +105,7 @@ module.exports = {
         },
 
         // Save book to user's `savedBooks` field by adding it to the set (to prevent duplicates)
-        saveBook: async (_, { userId, book }) => {
+        saveBook: async (_, { book, userId }) => {
             const updatedUser = await User.findOneAndUpdate(
                 { _id: userId },
                 { $addToSet: { savedBooks: book } },

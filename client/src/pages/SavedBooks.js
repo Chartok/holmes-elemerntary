@@ -5,7 +5,10 @@ import { REMOVE_BOOK } from '../utils/mutations';
 import { Alert, Container, List, ListItem, Button, Link, Typography } from '@mui/material';
 
 function SavedBooks() {
-  const { loading, data, error } = useQuery(GET_SAVED_BOOKS);
+  const userId = localStorage.getItem('user_id');
+  const { loading, data, error, refetch } = useQuery(GET_SAVED_BOOKS, {
+    variables: { userId },
+  });
   const [removeBook] = useMutation(REMOVE_BOOK, {
     update(cache, { data: { removeBook } }) {
       const existingBooks = cache.readQuery({ query: GET_SAVED_BOOKS });
@@ -18,7 +21,8 @@ function SavedBooks() {
   });
 
   const handleRemoveBook = async (bookId) => {
-    removeBook({ variables: { bookId } });
+    await removeBook({ variables: { bookId } });
+    refetch();
   };
 
   if (loading) return <Typography variant="body1">Loading...</Typography>;

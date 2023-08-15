@@ -13,8 +13,15 @@ function SearchBooks() {
     searchBooks({ variables: { query: values.searchInput } });
   };
 
-  const handleSaveBook = (userId, book) => {
-    saveBook({ variables: { userId, input: book } });
+  const handleSaveBook = async (bookData) => {
+    const userId = localStorage.getItem('user_id');
+
+    try{
+      await saveBook({ 
+        variables: { book: bookData, userId } });
+    } catch (err) {
+      console.error(err.message);
+    }
   };
 
   const { onChange, onSubmit, values } = useForm(search, {
