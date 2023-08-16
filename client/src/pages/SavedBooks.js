@@ -1,20 +1,20 @@
 import React from 'react';
 import { useMutation, useQuery } from '@apollo/client';
-import { GET_SAVED_BOOKS } from '../utils/queries';
+import { QUERY_ME } from '../utils/queries';
 import { REMOVE_BOOK } from '../utils/mutations';
 import { Alert, Container, List, ListItem, Button, Link, Typography } from '@mui/material';
 
 function SavedBooks() {
   const userId = localStorage.getItem('user_id');
-  const { loading, data, error, refetch } = useQuery(GET_SAVED_BOOKS, {
+  const { loading, data, error, refetch } = useQuery(QUERY_ME, {
     variables: { userId },
   });
   const [removeBook] = useMutation(REMOVE_BOOK, {
     update(cache, { data: { removeBook } }) {
-      const existingBooks = cache.readQuery({ query: GET_SAVED_BOOKS });
+      const existingBooks = cache.readQuery({ query: QUERY_ME });
       const updatedBooks = existingBooks.savedBooks.filter((book) => book.bookId !== removeBook.bookId);
       cache.writeQuery({
-        query: GET_SAVED_BOOKS,
+        query: QUERY_ME,
         data: { savedBooks: updatedBooks },
       });
     },
