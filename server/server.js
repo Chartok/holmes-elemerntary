@@ -3,7 +3,7 @@ const express = require('express');
 const { ApolloServer } = require('apollo-server-express');
 const path = require('path');
 const { typeDefs, resolvers } = require('./schemas');
-// const { context } = require('./utils/auth');
+const context = require('./utils/auth');
 const mongoose = require('./config/connection');
 
 const app = express();
@@ -12,8 +12,7 @@ const server = new ApolloServer({
   typeDefs,
   resolvers,
   context: async ({ req }) => {
-    const token = req.headers.authorization || '';
-    const user = await context(token);
+    const user = await context({ req });
     return { user };
   }
 });
