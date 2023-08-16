@@ -10,7 +10,7 @@ function Navbar () {
 
   const onLogout = () => {
     logout();
-    navigate("/");
+    navigate("/home");
   };
 
   return (
