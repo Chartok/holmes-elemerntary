@@ -12,7 +12,7 @@ const server = new ApolloServer({
   typeDefs,
   resolvers,
   context: async ({ req }) => {
-    const user = await context({ req });
+    const user = context({ req });
     return { user };
   }
 });
