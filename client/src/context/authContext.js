@@ -2,7 +2,7 @@ import React, { createContext, useReducer } from 'react';
 import jwtDecode from 'jwt-decode';
 
 const initialState = {
-    user: {},
+    user: null,
 };
 
 if(localStorage.getItem("token")) {

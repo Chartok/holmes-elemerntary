@@ -11,11 +11,11 @@ const app = express();
 const server = new ApolloServer({
   typeDefs,
   resolvers,
-  // context: async ({ req }) => {
-  //   const token = req.headers.authorization || '';
-  //   const user = await context(token);
-  //   return { user };
-  // }
+  context: async ({ req }) => {
+    const token = req.headers.authorization || '';
+    const user = await context(token);
+    return { user };
+  }
 });
 
 
