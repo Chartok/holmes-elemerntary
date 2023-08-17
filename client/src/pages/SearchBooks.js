@@ -1,9 +1,10 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import { Alert, Container, Box, TextField, Button, Typography, Link, List, ListItem } from '@mui/material';
 import { useForm } from '../utils/hooks';
 import { useLazyQuery, useMutation } from '@apollo/client';
 import { SAVE_BOOK } from '../utils/mutations';
 import { SEARCH_BOOKS } from '../utils/queries';
+import { AuthContext } from '../context/authContext';
 
 function SearchBooks() {
   const [searchBooks, { loading, error, data }] = useLazyQuery(SEARCH_BOOKS);
@@ -12,13 +13,23 @@ function SearchBooks() {
   const search = () => {
     searchBooks({ variables: { query: values.searchInput } });
   };
+  const { user } = useContext(AuthContext);
 
   const handleSaveBook = async (bookData) => {
-    const userId = localStorage.getItem('user_id');
+    const userId = user?.user_id;
+
+    console.log('user object', user);
+
+    if (!userId) {
+      console.error(error);
+      return;
+    }
+
+    const { __typename, ...bookToSave } = bookData;
 
     try{
       await saveBook({ 
-        variables: { book: bookData, userId } });
+        variables: { book: bookToSave, userId } });
     } catch (err) {
       console.error(err.message);
     }
