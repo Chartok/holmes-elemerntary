@@ -15,13 +15,11 @@ module.exports = {
         },
 
         // Query saved books
-        savedBooks: async (_, {}, context) => {
-            if (context.user) {
-                const user = await User.findOne({ _id: context.user._id }).populate('savedBooks');
+        savedBooks: async (_, { }, context) => {
+            const userId = context.userId;
+            const user = await User.findById(userId);
 
-                console.log(user.savedBooks);
-                return user.savedBooks;
-            }
+            return user.savedBooks;
         },
 
         // Query books from Google Books API
@@ -32,7 +30,7 @@ module.exports = {
 
             const res = response.data;
 
-            if(!res.items) {
+            if (!res.items) {
                 throw new Error('No books found!');
             }
 
@@ -46,7 +44,7 @@ module.exports = {
             }));
 
             return bookData;
-        }
+        },
     },
     Mutation: {
         // Register new user with signed token and send it to client
