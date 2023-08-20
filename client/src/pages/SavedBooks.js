@@ -7,7 +7,7 @@ import { Alert, Container, List, ListItem, Button, Link, Typography } from '@mui
 function SavedBooks() {
   const userId = localStorage.getItem('user_id');
   const { loading, data, error, refetch } = useQuery(QUERY_ME, {
-    variables: { userId, savedBooks: [] },
+    variables: { id: userId },
   });
   console.log('data', data);
   console.log('loading', loading);

@@ -8,10 +8,12 @@ const axios = require('axios');
 module.exports = {
     Query: {
         // Query single user by id or username
-        user: async (_, { id, username }) => {
-            User.findOne({
-                $or: [{ _id: id }, { username }],
-            });
+        user: async (_, { id }, context) => {
+            const user = await User.findById(id);
+            if (!user) {
+                throw new ApolloError('No user found with this id!');
+            }
+            return user;
         },
 
         // Query saved books
