@@ -33,7 +33,9 @@ const userSchema = new Schema({
       trim: true
   },
 
-  savedBooks: [bookSchema]
+  savedBooks: {
+    type: [bookSchema]
+  }
 
 });
 
