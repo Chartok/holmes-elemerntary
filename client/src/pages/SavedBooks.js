@@ -9,6 +9,9 @@ function SavedBooks() {
   const { loading, data, error, refetch } = useQuery(QUERY_ME, {
     variables: { userId, savedBooks: [] },
   });
+  console.log('data', data);
+  console.log('loading', loading);
+  console.log('error', error);
   const [removeBook] = useMutation(REMOVE_BOOK, {
     update(cache, { data: { removeBook } }) {
       const existingBooks = cache.readQuery({ query: QUERY_ME });
