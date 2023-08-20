@@ -35,14 +35,18 @@ function SavedBooks() {
     <Container>
       <Typography variant='h3'>Saved Books</Typography>
       <List>
-        {data.savedBooks.map((book) => (
+        {data && data.savedBooks ? (
+        data.savedBooks.map((book) => (
           <ListItem key={book.bookId}>
             <Typography variant='h5'>{book.title}</Typography>
             <img src={book.image} alt={book.title} />
             <Link href={book.link}>More Info</Link>
             <Button variant='contained' color='secondary' onClick={() => handleRemoveBook(book.bookId)}>Remove Book</Button>
           </ListItem>
-        ))}
+        ))
+        ) : (
+          <Typography variant='body1'>You have no saved books!</Typography>
+        )}
       </List>
     </Container>
   );

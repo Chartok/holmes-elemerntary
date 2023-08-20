@@ -15,8 +15,13 @@ module.exports = {
         },
 
         // Query saved books
-        savedBooks: async (_, {}) => {
-            return await Book.find();
+        savedBooks: async (_, {}, context) => {
+            if (context.user) {
+                const user = await User.findOne({ _id: context.user._id }).populate('savedBooks');
+
+                console.log(user.savedBooks);
+                return user.savedBooks;
+            }
         },
 
         // Query books from Google Books API
