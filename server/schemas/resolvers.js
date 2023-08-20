@@ -40,7 +40,6 @@ module.exports = {
                 link: book.volumeInfo.infoLink,
             }));
 
-            await Book.insertMany(bookData);
             return bookData;
         }
     },

@@ -18,7 +18,6 @@ function SearchBooks() {
   const handleSaveBook = async (bookData) => {
     const userId = user?.user_id;
 
-    console.log('user object', user);
 
     if (!userId) {
       console.error(error);
@@ -30,6 +29,7 @@ function SearchBooks() {
     try{
       await saveBook({ 
         variables: { book: bookToSave, userId } });
+        console.table("Book data", bookData);
     } catch (err) {
       console.error(err.message);
     }

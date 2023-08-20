@@ -7,7 +7,7 @@ import { Alert, Container, List, ListItem, Button, Link, Typography } from '@mui
 function SavedBooks() {
   const userId = localStorage.getItem('user_id');
   const { loading, data, error, refetch } = useQuery(QUERY_ME, {
-    variables: { userId },
+    variables: { userId, savedBooks: [] },
   });
   const [removeBook] = useMutation(REMOVE_BOOK, {
     update(cache, { data: { removeBook } }) {
