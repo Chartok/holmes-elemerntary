@@ -1,4 +1,5 @@
 const { Schema, model } = require('mongoose');
+const { bookSchema } = require('./Book');
 
 const userSchema = new Schema({
   
@@ -31,6 +32,8 @@ const userSchema = new Schema({
       unique: true,
       trim: true
   },
+
+  savedBooks: [bookSchema]
 
 });
 

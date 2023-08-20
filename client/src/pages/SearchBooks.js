@@ -18,6 +18,7 @@ function SearchBooks() {
   const handleSaveBook = async (bookData) => {
     const userId = user?.user_id;
 
+    console.table("Book data", bookData);
 
     if (!userId) {
       console.error(error);
@@ -27,9 +28,9 @@ function SearchBooks() {
     const { __typename, ...bookToSave } = bookData;
 
     try{
-      await saveBook({ 
+      const response = await saveBook({ 
         variables: { book: bookToSave, userId } });
-        console.table("Book data", bookData);
+        console.table("Response", response);
     } catch (err) {
       console.error(err.message);
     }

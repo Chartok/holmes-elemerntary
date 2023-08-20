@@ -111,6 +111,10 @@ module.exports = {
                 { new: true, runValidators: true }
             );
 
+            console.log("book", book);
+            console.log("userId", userId);
+            console.log("updatedUser", updatedUser);
+
             if (!updatedUser) {
                 throw new Error("Could not save book!");
             }
