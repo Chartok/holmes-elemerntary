@@ -61,7 +61,7 @@ function SearchBooks() {
                     <strong>Authors:</strong> {book.authors.join(', ')}
                   </Typography>
                 </Link>
-                <SaveBook />
+                <SaveBook book={book} />
               </ListItem>
             ))}
           </List>

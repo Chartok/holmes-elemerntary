@@ -5,43 +5,38 @@ import { AuthContext } from '../context/authContext';
 import { Alert, Container, Box, Button, Typography } from '@mui/material';
 
 
-function SaveBook() {
+function SaveBook({ book }) {
     const [saveBook, { loading, data, error }] = useMutation(SAVE_BOOK);
     const { user } = useContext(AuthContext);
-    const handleSaveBook = async (bookData) => {
-        const userId = await user?.user_id;
-        const { __typename, ...bookToSave } = bookData;
 
-        if (!userId) {
-            console.error(error);
-            return;
-        }
+    if (loading) {
+        return <Typography>Loading...</Typography>;
+    } else if (error) {
+        return <Alert severity='error'>Error saving book: {error.message}</Alert>
+    } else if (!user) {
+        return <Alert severity='warning'>You must be logged in to save books</Alert>
+    } 
+        const handleSaveBook = async () => {
+            try {
+                const userId = await user?.user_id;
+                const { __typename, ...bookToSave } = book;
 
+                await saveBook({
+                    variables: { book: bookToSave, userId }
+                });
+            } catch (error) {
+                console.error('An error occurrd:', error)
+            }
+            return 'The book was saved to your library!'
+        };
 
-        try {
-            await saveBook({
-                variables: { book: bookToSave, userId }
-            });
-        } catch (error) {
-            console.error(error.message);
-        }
+        return (
+            <Container >
+                <Box my={4}>
+                    <Button variant='contained' color='primary' onClick={() => handleSaveBook(data)}>Save Book</Button>
+                </Box>
+            </Container>
+        )
     };
 
-    return (
-        <Container >
-            <Box my={4}>
-                <Button variant='contained' color='primary' onClick={() => handleSaveBook() }>Save Book</Button>
-            </Box>
-
-            <Box>
-                {loading && <Typography variant='body1'>Saving...</Typography>}
-
-                {error && <Alert severity='error' sx={{ mt: 2 }}>Unable to save book! {error.message}</Alert>}
-
-                {data && <Typography variant='body1'>Book saved!</Typography>}
-            </Box>
-        </Container>
-    )
-};
-
-export default SaveBook;
+    export default SaveBook;
