@@ -1,39 +1,15 @@
-import React, { useContext } from 'react';
+import React from 'react';
+import SaveBook from '../components/SaveBookBtn'
 import { Alert, Container, Box, TextField, Button, Typography, Link, List, ListItem } from '@mui/material';
 import { useForm } from '../utils/hooks';
-import { useLazyQuery, useMutation } from '@apollo/client';
-import { SAVE_BOOK } from '../utils/mutations';
+import { useLazyQuery } from '@apollo/client';
 import { SEARCH_BOOKS } from '../utils/queries';
-import { AuthContext } from '../context/authContext';
 
 function SearchBooks() {
   const [searchBooks, { loading, error, data }] = useLazyQuery(SEARCH_BOOKS);
-  const [saveBook] = useMutation(SAVE_BOOK);
 
   const search = () => {
     searchBooks({ variables: { query: values.searchInput } });
-  };
-  const { user } = useContext(AuthContext);
-
-  const handleSaveBook = async (bookData) => {
-    const userId = user?.user_id;
-
-    console.table("Book data", bookData);
-
-    if (!userId) {
-      console.error(error);
-      return;
-    }
-
-    const { __typename, ...bookToSave } = bookData;
-
-    try{
-      const response = await saveBook({ 
-        variables: { book: bookToSave, userId } });
-        console.table("Response", response);
-    } catch (err) {
-      console.error(err.message);
-    }
   };
 
   const { onChange, onSubmit, values } = useForm(search, {
@@ -85,13 +61,7 @@ function SearchBooks() {
                     <strong>Authors:</strong> {book.authors.join(', ')}
                   </Typography>
                 </Link>
-                <Button
-                  variant="outlined"
-                  color="primary"
-                  onClick={() => handleSaveBook(book)}
-                >
-                  Save
-                </Button>
+                <SaveBook />
               </ListItem>
             ))}
           </List>
