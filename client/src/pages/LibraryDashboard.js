@@ -1,8 +1,13 @@
+// Import react
 import React from 'react';
+
+// Import Apollo&GQL hooks, queries, and mutations
 import { useMutation, useQuery } from '@apollo/client';
 import { QUERY_ME } from '../utils/queries';
 import { REMOVE_BOOK } from '../utils/mutations';
-import { Alert, Container, List, ListItem, Button, Link, Typography } from '@mui/material';
+
+// Import ui
+import { Alert, Container, List, ListItem, Button, Link,  Typography } from '@mui/material';
 
 function SavedBooks() {
   const userId = localStorage.getItem('user_id');

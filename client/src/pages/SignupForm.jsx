@@ -23,10 +23,10 @@ const REGISTER_USER = gql`
 `;
 
 
-function Register() { 
+function Register() {
     const context = useContext(AuthContext);
     let navigate = useNavigate();
-    const [ errors, setErrors ] = useState([]);
+    const [errors, setErrors] = useState([]);
 
     const registerUserCallback = () => {
         console.log("Registering user...")
@@ -40,12 +40,12 @@ function Register() {
         confirmPassword: ''
     });
 
-    const [ registerUser, { loading } ] = useMutation(REGISTER_USER, {
-        update(proxy, { data:{ registerUser: userData }}) {
+    const [registerUser, { loading }] = useMutation(REGISTER_USER, {
+        update(proxy, { data: { registerUser: userData } }) {
             context.login(userData);
             navigate('/');
         },
-        onError({ graphQLErrors}) {
+        onError({ graphQLErrors }) {
             setErrors(graphQLErrors);
         },
         variables: { registerInput: values }
@@ -60,27 +60,33 @@ function Register() {
                     label="Username"
                     name="username"
                     onChange={onChange}
-                    />
+                />
                 <TextField
                     label="Email"
                     name="email"
                     onChange={onChange}
-                    />
+                />
                 <TextField
                     label="Password"
                     name="password"
                     onChange={onChange}
-                    />
+                />
                 <TextField
                     label="Confirm Password"
                     name="confirmPassword"
                     onChange={onChange}
-                    />
+                />
             </Stack>
             {errors.map(error => (
                 <Alert severity="error">{error.message}</Alert>
             ))}
-            <Button variant="contained" onClick={onSubmit}>Register</Button>
+            <div>
+                {loading ? (
+                    <p>Loading...</p>
+                ) : (
+                    <Button variant="contained" onClick={onSubmit}>Register</Button>
+                )}
+            </div>
         </Container>
     )
 }

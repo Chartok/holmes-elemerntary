@@ -1,11 +1,21 @@
+// Import useContext hook
 import React, { useContext } from 'react';
+
+// Import save book gql mutation
 import { SAVE_BOOK } from '../utils/mutations';
+
+// Import useMutation hook
 import { useMutation } from '@apollo/client';
+
+// Import JWT 
 import { AuthContext } from '../context/authContext';
+
+// Import ui 
 import { Alert, Container, Box, Button, Typography } from '@mui/material';
 
 
-function SaveBook({ book }) {
+// Savebook component for saving books; passing in books prop
+export default function SaveBook({ book }) {
     const [saveBook, { loading, data, error }] = useMutation(SAVE_BOOK);
     const { user } = useContext(AuthContext);
 
@@ -38,5 +48,3 @@ function SaveBook({ book }) {
             </Container>
         )
     };
-
-    export default SaveBook;

@@ -16,7 +16,7 @@ module.exports = {
             return user;
         },
 
-        // Query saved books
+        // Query saved books for their library dashboard
         savedBooks: async (_, { }, context) => {
             const userId = context.userId;
             const user = await User.findById(userId);
@@ -108,7 +108,7 @@ module.exports = {
             }
         },
 
-        // Save book to user's `savedBooks` field by adding it to the set (to prevent duplicates)
+        // Save book to user's `savedBooks` field by adding it to a set preventing duplicates
         saveBook: async (_, { book, userId }) => {
             const updatedUser = await User.findOneAndUpdate(
                 { _id: userId },
