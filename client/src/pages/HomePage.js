@@ -1,10 +1,12 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { Container, Typography, Button, Box } from '@mui/material';
+import Sidebar from '../components/sidebar/Sidebar';
 
 const HomePage = () => {
     return (
         <Container>
+            <Sidebar />
             <Box textAlign='center' py={10}>
                 <Typography variant="h2" gutterBottom>
                     Welcome to Book Finder
