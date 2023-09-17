@@ -85,9 +85,15 @@ const SearchBooks = () => {
     }
   };
 
+  // Change background based on user's logged-in status
+  const getBackgroundClass = () => {
+    return Auth.getToken() ? 'bg-primary' : 'bg-dark'; 
+    
+  };
+
   return (
     <>
-      <div className='text-light bg-dark pt-5'>
+      <div className={`text-light bg-none pt-5 ${getBackgroundClass()}`}>
         <Container>
           <h1>Search for Books!</h1>
           <Form onSubmit={handleFormSubmit}>
