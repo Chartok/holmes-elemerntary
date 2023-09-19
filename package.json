@@ -14,9 +14,5 @@
   "license": "ISC",
   "devDependencies": {
     "concurrently": "^8.2.1"
-  },
-  "dependencies": {
-    "@mui/icons-material": "^5.14.9",
-    "sass": "^1.67.0"
   }
 }
