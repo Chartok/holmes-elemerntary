@@ -7,7 +7,9 @@ const context = require('./utils/auth');
 const mongoose = require('./config/connection');
 
 const app = express();
+const PORT = process.env.PORT || 5000;
 
+// Create apollo server intance and user auth context
 const server = new ApolloServer({
   typeDefs,
   resolvers,
@@ -26,8 +28,7 @@ if (process.env.NODE_ENV === 'production') {
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 
-const PORT = process.env.PORT || 5000;
-
+// Initialize apollo server instance and open connection to mongoDB.
 const startApollo = async () => {
   await server.start();
   server.applyMiddleware({ app, path: '/' });
