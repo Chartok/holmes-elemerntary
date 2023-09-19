@@ -1,5 +1,5 @@
-const User = require( '../models/User' );
 const { ApolloError } = require( '@apollo/server' );
+const User = require( '../models/User' );
 const Book = require( '../models/Book' );
 const bcrypt = require( 'bcrypt' );
 const jwt = require( 'jsonwebtoken' );
