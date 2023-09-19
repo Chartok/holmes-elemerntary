@@ -1,4 +1,4 @@
-const { gql } = require( 'apollo-server-express' );
+const { gql } = require( '@apollo/server' );
 
 // Create GraphQL typeDefs
 module.exports = gql`
