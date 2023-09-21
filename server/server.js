@@ -33,7 +33,7 @@ const startApollo = async () => {
   await server.start();
   server.applyMiddleware( { app, path: '/' } );
 
-  mongoose.connect.once( 'open', () => {
+  mongoose.createConnection.once( 'open', () => {
     console.log( 'Connected to database...' );
     app.use( ( err, req, res, next ) => {
       console.log( err );
