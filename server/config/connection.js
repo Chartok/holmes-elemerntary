@@ -15,7 +15,7 @@ const connectToMongoDB = async () => {
 
 
         try {
-            await mongoose.connect('mongodb://localhost:27017/googlebooks', options);
+            await mongoose.connect('mongodb://127.0.0.1:27017/googlebooks', options);
             console.log('Connected to MongoDB locally');
         } catch (error) {
             console.log('Failed to connect to MongoDB locally', error);
@@ -26,4 +26,4 @@ const connectToMongoDB = async () => {
 
 connectToMongoDB();
 
-module.exports = mongoose;
+module.exports = connectToMongoDB();
