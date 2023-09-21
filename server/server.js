@@ -30,7 +30,7 @@ const PORT = process.env.PORT || 5000;
 
 const startApollo = async () => {
   await server.start();
-  server.applyMiddleware({ app, path: '/' });
+  server.applyMiddleware({ app });
 
   mongoose.connection.once('open', () => {
     console.log('Connected to database...')
