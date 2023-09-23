@@ -3,9 +3,9 @@ import { Routes, Route, Navigate  } from 'react-router-dom';
 import Navbar from './components/Navbar';
 import HomePage from './pages/HomePage';
 import SearchBooks from './pages/SearchBooks'; 
-import LibraryDashboard from './pages/LibraryDashboard'; 
-import LoginForm from './pages/LoginForm'; 
-import SignupForm from './pages/SignupForm'; 
+import SavedBooks from './pages/SavedBooks'; 
+import LoginForm from './components/LoginForm'; 
+import SignupForm from './components/SignupForm'; 
 
 function App() {
 
@@ -15,7 +15,7 @@ function App() {
       <Routes>
         <Route path="/" element={<Navigate to="/home" />} />
         <Route path="/home" element={<HomePage />} />
-        <Route path="/LibraryDashboard" element={<LibraryDashboard />} />
+        <Route path="/savedbooks" element={<SavedBooks />} />
         <Route path="/searchBooks" element={<SearchBooks />} />
         <Route path="/login" element={<LoginForm />} />
         <Route path="/signup" element={<SignupForm />} />
