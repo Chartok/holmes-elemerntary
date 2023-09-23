@@ -27,7 +27,7 @@ function Login() {
   const [loginUser] = useMutation(LOGIN_USER, {
     update(_, { data: { loginUser: userData } }) {
       Context.login(userData);
-      navigate('/searchBooks');
+      navigate('/home');
     },
     onError({ graphQLErrors }) {
       setErrors(graphQLErrors);

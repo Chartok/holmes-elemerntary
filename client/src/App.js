@@ -2,7 +2,7 @@ import React from 'react';
 import { Routes, Route, Navigate  } from 'react-router-dom';
 import Navbar from './components/Navbar';
 import HomePage from './pages/HomePage';
-import SearchBooks from './pages/SearchBooks'; 
+// import GuestSearch from './components/GuestSearch'; 
 import SavedBooks from './pages/SavedBooks'; 
 import LoginForm from './components/LoginForm'; 
 import SignupForm from './components/SignupForm'; 
@@ -16,7 +16,7 @@ function App() {
         <Route path="/" element={<Navigate to="/home" />} />
         <Route path="/home" element={<HomePage />} />
         <Route path="/savedbooks" element={<SavedBooks />} />
-        <Route path="/searchBooks" element={<SearchBooks />} />
+        {/* <Route path="/guestsearch" element={<GuestSearch />} /> */}
         <Route path="/login" element={<LoginForm />} />
         <Route path="/signup" element={<SignupForm />} />
       </Routes>
