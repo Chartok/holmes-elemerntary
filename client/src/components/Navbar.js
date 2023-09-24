@@ -1,12 +1,17 @@
 import { AppBar, Box, Button, Toolbar, Typography } from "@mui/material";
 import { AuthContext } from "../context/authContext";
 import { useContext } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useNavigate, useLocation } from "react-router-dom";
 
 
 function Navbar () {
   let navigate = useNavigate();
   const { user, logout } = useContext(AuthContext);
+  const location = useLocation();
+
+  if (location.pathname === '/home') {
+    return null;
+  }
 
   const onLogout = () => {
     logout();
@@ -17,14 +22,14 @@ function Navbar () {
     <Box sx={{ flexGrow: 1 }}>
       <AppBar position="static">
         <Toolbar>
-          <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
+          <Typography component="div" sx={{ flexGrow: 1 }}>
 
             <Link to="/home" style={{ textDecoration: "none", color: "white" }}>Home </Link>
 
+              {/* If user is not logged in or not registered, do not show the link to collection */}
+
             {!user?
-              <>
-                <Link to="/guestsearch">| Guest Search |</Link>
-              </>
+              <></>
               :
               <>
                 <Link to="/savedbooks">Collection</Link>

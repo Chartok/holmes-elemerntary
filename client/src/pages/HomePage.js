@@ -14,7 +14,7 @@ const HomePage=() => {
                 <Typography variant="h2" gutterBottom>
                     Welcome to Book Finder
                 </Typography>
-                <Typography variant="subtitile" paragraph>
+                <Typography>
                     Discover new books to add to your collection.
                 </Typography>
                 <Box mt={4}>
@@ -26,19 +26,36 @@ const HomePage=() => {
                         </>
                         :
                         <>
-                            <Typography variant="subtitile" paragraph>
+                            <Typography>
                                 Sign up to create your personal library, or login to continue exploring.
-                            </Typography>   <Button variant="contained" color="primary" component={Link} to="/signup">Sign Up</Button>
-                            <Button variant="outlined" color="primary" component={Link} to="/login">Login</Button>
-                            <Box mt={4}>
-                                <Typography variant="body1" paragraph>
-                                    Explore as a guest
-                                    <Link to='/guestsearch'>here</Link>
-                                </Typography>
+                            </Typography>
+
+                            <Button variant="contained" color="primary"
+                                component={Link} to="/signup">
+                                Sign Up
+                            </Button>
+
+                            <Button variant="outlined" color="primary"
+                                component={Link} to="/login">
+                                Login
+                            </Button>
+
+                                <hr />
+
+                            <Box mt={20}>
+
+                                Explore as a guest
+                                {!user?
+                                    <>
+                                        <SearchBook />
+                                    </>
+                                    :
+                                    <>
+                                    </>
+                                }
                             </Box>
                         </>
                     }
-
                 </Box>
             </Box>
         </Container>

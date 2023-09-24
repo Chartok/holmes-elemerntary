@@ -1,25 +1,28 @@
 import React from 'react';
 import SaveBook from '../components/SaveBookBtn'
-import { Alert, Container, Box, TextField, Button, Typography, Link, List, ListItem } from '@mui/material';
-import { useForm } from '../utils/hooks';
-import { useLazyQuery } from '@apollo/client';
-import { SEARCH_BOOKS } from '../utils/queries';
+import {Alert,Container,Box,TextField,Button,Typography,Link,List,ListItem} from '@mui/material';
+import {useForm} from '../utils/hooks';
+import {useLazyQuery} from '@apollo/client';
+import {SEARCH_BOOKS} from '../utils/queries';
+import { AuthContext } from '../context/authContext';
+import { useContext } from 'react';
 
 function SearchBooks() {
-  const [searchBooks, { loading, error, data }] = useLazyQuery(SEARCH_BOOKS);
+  const [searchBooks,{loading,error,data}]=useLazyQuery(SEARCH_BOOKS);
+  const { user } = useContext(AuthContext);
 
-  const search = () => {
-    searchBooks({ variables: { query: values.searchInput } });
+  const search=() => {
+    searchBooks({variables: {query: values.searchInput}});
   };
 
-  const { onChange, onSubmit, values } = useForm(search, {
+  const {onChange,onSubmit,values}=useForm(search,{
     searchInput: '',
   });
 
   return (
     <Container maxWidth="md">
       <Box my={4}>
-        <Typography variant="h4" component="h1" gutterBottom>
+        <Typography component="h1" gutterBottom>
           Search for Books!
         </Typography>
         <form onSubmit={onSubmit}>
@@ -42,26 +45,35 @@ function SearchBooks() {
       </Box>
       <Box my={4}>
 
-        {loading && <Typography variant="body1">Loading...</Typography>}
+        {loading&&<Typography >Loading...</Typography>}
 
-        {error && <Alert severity="error" sx={{ mt: 2 }}>
+        {error&&<Alert severity="error" sx={{mt: 2}}>
           An error occurred: {error.message}
         </Alert>}
 
-        {data?.searchBooks && (
+        {data?.searchBooks&&(
           <List>
             {data.searchBooks.map((book) => (
               <ListItem key={book.bookId}>
                 <Link href={book.link}>
                   <img src={book.image} alt={book.title} />
-                  <Typography variant="body1">
-                    <strong>Description:</strong> {book.description}
+                  <Typography>
+                    <strong>Title:</strong> {book.title}
                   </Typography>
-                  <Typography variant="body1">
+                  <Typography>
                     <strong>Authors:</strong> {book.authors.join(', ')}
                   </Typography>
+
                 </Link>
-                <SaveBook book={book} />
+                {user ?
+                  <>
+                      <SaveBook book={book} />
+                  </>
+                  :
+                  <>
+                  
+                  </>
+                }
               </ListItem>
             ))}
           </List>

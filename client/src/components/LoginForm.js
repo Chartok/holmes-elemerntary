@@ -38,11 +38,11 @@ function Login() {
   return (
     <Container spacing={2} maxWidth="sm">
       <h3>Login</h3>
-      <p>Enter your email and password to log in</p>
       <Stack spacing={2} paddingBottom={2}>
         <TextField label="Email" name="email" onChange={onChange} />
         <TextField label="Password" name="password" onChange={onChange} />
       </Stack>
+      <p>Enter your email and password to log in</p>
       {errors.map(errors => (
         <Alert severity="error">{errors.message}</Alert>
       ))}
