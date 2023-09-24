@@ -7,9 +7,11 @@ import { Link, useNavigate, useLocation } from "react-router-dom";
 function Navbar () {
   let navigate = useNavigate();
   const { user, logout } = useContext(AuthContext);
+
+  // Do not render navbar on home page if user is not logged in
   const location = useLocation();
 
-  if (location.pathname === '/home') {
+  if (!user && location.pathname === '/home') {
     return null;
   }
 

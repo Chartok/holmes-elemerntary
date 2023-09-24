@@ -12,8 +12,6 @@ function App() {
 
   return (
     <div>
-      {/* Don't render navbar at '/home' */}
-      { location.pathname!=='/home' && <Navbar /> }
       <Navbar />
       <Routes>
         <Route path="/" element={<Navigate to="/home" />} />

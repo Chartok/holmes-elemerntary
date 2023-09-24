@@ -1,50 +1,53 @@
-// Import useContext hook
-import React,{useContext} from 'react';
+// Savebook button component for saving books to user's collection
 
-// Import save book gql mutation
-import {SAVE_BOOK} from '../utils/mutations';
+// Import dependencies
+import React, { useContext, useState } from 'react';
+import { SAVE_BOOK } from '../utils/mutations';
+import { useMutation } from '@apollo/client';
+import { AuthContext } from '../context/authContext';
+import { Alert, Container, Box, Button, Typography } from '@mui/material';
+import PropTypes from 'prop-types';
 
-// Import useMutation hook
-import {useMutation} from '@apollo/client';
+export default function SaveBook({ book }) {
+    const [ saveBook, { loading } ] = useMutation(SAVE_BOOK);
+    const { user } = useContext(AuthContext);
 
-// Import JWT 
-import {AuthContext} from '../context/authContext';
+    // State for error handling
+    const [saveError, setSaveError] = useState(null);
 
-// Import ui 
-import {Alert,Container,Box,Button,Typography} from '@mui/material';
+    // Loading state
+    if (loading) return <Typography>Loading...</Typography>;
 
+    // Error state from apollo client
+    if (saveError) return <Alert severity='error'>Error saving book: {saveError}</Alert>
 
-// Savebook component for saving books; passing in books prop
-export default function SaveBook({book}) {
-    const [saveBook,{loading,data,error}]=useMutation(SAVE_BOOK);
-    const {user}=useContext(AuthContext);
+    // If user is not logged in and can see the save book button
+    if (!user) return <Alert severity='warning'>You must be logged in to save books</Alert>
 
-    if(loading) {
-        return <Typography>Loading...</Typography>;
-    } else if(error) {
-        return <Alert severity='error'>Error saving book: {error.message}</Alert>
-    } else if(!user) {
-        return <Alert severity='warning'>You must be logged in to save books</Alert>
-    }
-    const handleSaveBook=async () => {
+    const handleSaveBook = async () => {
         try {
-            const userId=await user?.user_id;
-            const {__typename,...bookToSave}=book;
-
+            const userId = await user?.user_id;
+            const { __typename, ...bookToSave } = book;
             await saveBook({
-                variables: {book: bookToSave,userId}
+                variables: { book: bookToSave, userId }
             });
-        } catch(error) {
-            console.error('An error occurrd:',error)
+        } catch (error) {
+            setSaveError(error.message);
+            console.error('An error occurrd:', error)
         }
         return 'The book was saved to your library!'
     };
 
     return (
         <Container >
-            <Box my={4}>
-                <Button variant='contained' color='primary' onClick={() => handleSaveBook(data)}>Save Book</Button>
+            <Box my={ 4 }>
+                <Button variant='contained' color='primary' onClick={handleSaveBook}>Save Book</Button>
             </Box>
         </Container>
     )
+};
+
+// Type checking for props
+SaveBook.propTypes = {
+    book: PropTypes.object.isRequired,
 };
