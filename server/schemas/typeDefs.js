@@ -33,6 +33,7 @@ module.exports = gql`
     }
 
     input SaveBookInput {
+        user: ID!
         bookId: String!
         authors: [String]
         description: String
@@ -43,8 +44,8 @@ module.exports = gql`
 
     type Query {
         searchBooks(query: String!): [Book]
-        savedBooks: [Book]
-        user(id: ID!): User!
+        savedBooks: User! 
+        user(_id: ID!): User!
     }
 
     type Mutation {

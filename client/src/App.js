@@ -1,5 +1,5 @@
 import React from 'react';
-import { Routes, Route, Navigate, useLocation  } from 'react-router-dom';
+import { Routes, Route, Navigate } from 'react-router-dom';
 import Navbar from './components/Navbar';
 import HomePage from './pages/HomePage';
 import SavedBooks from './pages/SavedBooks'; 
@@ -7,8 +7,6 @@ import LoginForm from './components/LoginForm';
 import SignupForm from './components/SignupForm'; 
 
 function App() {
-
-  const location = useLocation();
 
   return (
     <div>
