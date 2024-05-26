@@ -13,35 +13,43 @@ export default function SaveBook({ book }) {
     const { user } = useContext(AuthContext);
 
     // State for error handling
-    const [saveError, setSaveError] = useState(null);
+    const [ saveError, setSaveError ] = useState(null);
 
     // Loading state
     if (loading) return <Typography>Loading...</Typography>;
 
     // Error state from apollo client
-    if (saveError) return <Alert severity='error'>Error saving book: {saveError}</Alert>
+    if (saveError) return <Alert severity='error'>Error saving book: { saveError }</Alert>
 
     // If user is not logged in and can see the save book button
     if (!user) return <Alert severity='warning'>You must be logged in to save books</Alert>
 
     const handleSaveBook = async () => {
+        if (!user) {
+            setSaveError('You must be logged in to save books');
+            return;
+        }
+
         try {
-            const userId = await user?.user_id;
             const { __typename, ...bookToSave } = book;
             await saveBook({
-                variables: { book: bookToSave, userId }
+                variables: { book: bookToSave }
             });
-        } catch (error) {
-            setSaveError(error.message);
-            console.error('An error occurrd:', error)
+            setSaveError(null);
+        } catch (Error) {
+            setSaveError(Error);
+            console.error("There was an error saving the book", Error);
         }
-        return 'The book was saved to your library!'
     };
 
     return (
         <Container >
             <Box my={ 4 }>
-                <Button variant='contained' color='primary' onClick={handleSaveBook}>Save Book</Button>
+                <Button variant='contained' color='primary' onClick={ handleSaveBook } disabled={ loading }>
+                    { loading ? 'Saving...' : 'Save Book' }
+                </Button>
+                { saveError && <Alert severity='error'>Error saving book: { saveError }</Alert> }
+                { !user && <Alert severity='warning'>You must be logged in to save books</Alert> }
             </Box>
         </Container>
     )

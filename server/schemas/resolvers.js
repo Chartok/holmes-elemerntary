@@ -1,5 +1,5 @@
 const User = require('../models/User');
-const { ApolloError } = require('apollo-server-express');
+const { ApolloError } = require('@apollo/server');
 const Book = require('../models/Book');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
@@ -17,7 +17,7 @@ module.exports = {
         },
 
         // Query saved books for their library dashboard
-        savedBooks: async (_, { }, context) => {
+        savedBooks: async (_, {}, context) => {
             const userId = context.userId;
             const user = await User.findById(userId);
 
@@ -109,18 +109,21 @@ module.exports = {
         },
 
         // Save book to user's `savedBooks` field by adding it to a set preventing duplicates
-        saveBook: async (_, { book, userId }) => {
-            const updatedUser = await User.findOneAndUpdate(
-                { _id: userId },
-                { $addToSet: { savedBooks: book } },
-                { new: true, runValidators: true }
-            );
+        saveBook: async (_, { book }, context) => {
 
-            if (!updatedUser) {
-                throw new Error("Could not save book!");
+            if (context.user) {
+                try {
+                    const updatedUser = await User.findByIdAndUpdate(
+                        context.user._id,
+                        { $addToSet: { savedBooks: book } },
+                        { new: true }
+                    );
+                    return updatedUser;
+                } catch (err) {
+                    throw new Error("Error saving book!");
+                }
             }
-
-            return updatedUser;
+            throw new Error("You need to be logged in!");
         },
 
         // Remove book from user's `savedBooks` field by removing it from the set

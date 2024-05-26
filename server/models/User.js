@@ -34,10 +34,9 @@ const userSchema = new Schema({
   },
 
   savedBooks: {
-    book: {
-      image: String,
-      title: String,
-      link: String
+    bookId: {
+      type: String,
+      required: true
     }
   }
 

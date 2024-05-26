@@ -1,7 +1,7 @@
-const { gql } = require('apollo-server-express');
+const gql = require('@apollo/server/')
 
 // Create GraphQL typeDefs
-module.exports = gql`
+const typeDefs = `
     type User {
         _id: ID!
         username: String!
@@ -55,3 +55,5 @@ module.exports = gql`
         removeBook(userId: ID!, bookId: String!): User
     }
 `;
+
+module.exports = typeDefs;
