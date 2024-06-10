@@ -1,9 +1,8 @@
-const { AuthenticationError } = require('apollo-server-express');
-
+const { GraphQLError } = require('graphql');
 const jwt = require('jsonwebtoken');
 
-module.exports = (context) => {
-  const authHeader = context.req.headers.authorization;
+module.exports = ({ req }) => {
+  const authHeader = req.headers.authorization;
   if (authHeader) {
     const token = authHeader.split('Bearer')[ 1 ];
     if (token) {
@@ -11,9 +10,9 @@ module.exports = (context) => {
         const user = jwt.verify(token, process.env.SECERET_KEY);
         return user;
       } catch (error) {
-        throw new AuthenticationError('Invalid/Expired token');
+        throw new GraphQLError('Invalid/Expired token');
       }
     }
   }
-  throw new AuthenticationError('Authentication must be provided');
+  throw new GraphQLError('Authentication must be provided');
 };

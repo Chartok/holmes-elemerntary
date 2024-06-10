@@ -1,31 +1,31 @@
 // @ts-nocheck
 import React, { createContext, useReducer } from 'react';
-import jwtDecode from 'jwt-decode';
+import jwt_decode from 'jwt-decode';
 
 // Check for 'null' token before decoding
 const token = localStorage.getItem("token");
 
 /** @type {{ user: { exp: number } | null }} */
 const initialState = {
-    user: token,
+    user: null,
 };
 
 if (token) {
     /** @type {{ exp: number }} */
-    const decodedToken = jwtDecode(token);
+    const decodedToken = jwt_decode(token);
     // Decode token and initialize user state if token is valid
-        if (decodedToken.exp * 1000 < Date.now()) {
-            localStorage.removeItem("token");
-            // TODO: Add function to refresh token
-        } else {
-            initialState.user = decodedToken;
-        }
-    
+    if (decodedToken.exp * 1000 < Date.now()) {
+        localStorage.removeItem("token");
+        // TODO: Add function to refresh token
+    } else {
+        initialState.user = decodedToken;
+    }
+
 }
 
 
 const AuthContext = createContext({
-    user: token,
+    user: null,
     login: (userData) => {},
     logout: () => {}
 });
@@ -71,9 +71,9 @@ function AuthProvider({ children }) {
 
     return (
         <AuthContext.Provider
-            value = {{ user: state.user, login, logout }}>
-                {children}
-            </AuthContext.Provider>
+            value={ { user: state.user, login, logout } }>
+            { children }
+        </AuthContext.Provider>
     );
 }
 
