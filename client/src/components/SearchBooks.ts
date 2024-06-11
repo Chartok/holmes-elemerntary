@@ -1,5 +1,5 @@
 import React from 'react';
-import SaveBook from '../components/SaveBookBtn'
+import SaveBook from './SaveBookBtn'
 import { Alert, Container, Box, TextField, Button, Typography, Link, List, ListItem } from '@mui/material';
 import { useForm } from '../utils/hooks';
 import { useLazyQuery } from '@apollo/client';
