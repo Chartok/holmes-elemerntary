@@ -186,8 +186,8 @@ const startApollo = async () => {
 			}
 		);
 		app.listen(PORT, () => {
-			console.log('Now listening on localhost:${PORT}');
-			console.log('Use GraphQL at http://localhost:${PORT}/graphql');
+			console.log(`Now listening on localhost:${PORT}`);
+			console.log(`Use GraphQL at http://localhost:${PORT}/graphql`);
 		});
 	});
 	startApollo().catch((error) => {
@@ -196,6 +196,6 @@ const startApollo = async () => {
 };
 
 await new Promise((resolve) => httpServer.listen({ port: PORT }, () => {
-	console.log('Server ready at http://localhost:${PORT}');
+	console.log(`Server ready at http://localhost:${PORT}`);
 	// Additional code to be executed after the server starts listening
 }));

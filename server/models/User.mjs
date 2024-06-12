@@ -1,6 +1,6 @@
 import mongoose from 'mongoose';
 const { Schema, model } = mongoose;
-const book = require('./Book');
+import Book from './Book.mjs';
 
 const userSchema = new Schema({
   

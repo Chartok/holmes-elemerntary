@@ -1,4 +1,4 @@
-const User = require('./User.mjs');
-const Book = require('./Book');
+import User from './User.mjs';
+import Book from './Book.mjs';
 
-module.exports = { User, Book };
+export default { User, Book };

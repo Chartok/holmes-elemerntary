@@ -148,7 +148,7 @@ import jwt from 'jsonwebtoken';
 import axios from 'axios';
 import { GraphQLError } from 'graphql';
 import User from '../models/User.mjs';
-// import Book from '../models/Book';
+import Book from '../models/Book.mjs';
 
 const resolvers = {
 	Query: {
