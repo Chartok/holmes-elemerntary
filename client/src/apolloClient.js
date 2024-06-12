@@ -7,7 +7,10 @@ const httpLink = (0, client_1.createHttpLink)({
 });
 const authLink = (0, context_1.setContext)((_, { headers }) => {
     return {
-        headers: Object.assign(Object.assign({}, headers), { authorization: localStorage.getItem('token') || '' })
+        headers: {
+            ...headers,
+            authorization: localStorage.getItem('token') || ''
+        }
     };
 });
 const client = new client_1.ApolloClient({

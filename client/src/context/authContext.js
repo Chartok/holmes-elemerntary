@@ -57,9 +57,15 @@ exports.AuthContext = AuthContext;
 function authReducer(state, action) {
     switch (action.type) {
         case "LOGIN":
-            return Object.assign(Object.assign({}, state), { user: action.payload });
+            return {
+                ...state,
+                user: action.payload
+            };
         case "LOGOUT":
-            return Object.assign(Object.assign({}, state), { user: null });
+            return {
+                ...state,
+                user: null
+            };
         default:
             return state;
     }

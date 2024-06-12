@@ -59,15 +59,6 @@
 // }
 //
 // export default SavedBooks;
-var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
-    function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
-    return new (P || (P = Promise))(function (resolve, reject) {
-        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
-        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
-        function step(result) { result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected); }
-        step((generator = generator.apply(thisArg, _arguments || [])).next());
-    });
-};
 var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
@@ -95,16 +86,19 @@ const SavedBooks = () => {
                 cache.writeQuery({
                     query: queries_1.QUERY_ME,
                     data: {
-                        me: Object.assign(Object.assign({}, existingBooks.me), { savedBooks: updatedBooks }),
+                        me: {
+                            ...existingBooks.me,
+                            savedBooks: updatedBooks,
+                        },
                     },
                 });
             }
         },
     });
-    const handleRemoveBook = (bookId) => __awaiter(void 0, void 0, void 0, function* () {
-        yield removeBook({ variables: { bookId } });
+    const handleRemoveBook = async (bookId) => {
+        await removeBook({ variables: { bookId } });
         refetch();
-    });
+    };
     if (loading)
         return <material_1.Typography variant='body1'>Loading...</material_1.Typography>;
     if (error)

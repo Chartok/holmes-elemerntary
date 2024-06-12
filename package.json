@@ -4,7 +4,7 @@
 	"description": "",
 	"main": "server/server.mjs",
 	"scripts": {
-		"start": "node server/server.js",
+		"start": "ts-node server/server.mjs",
 		"develop": "concurrently \"cd server && npm run watch\" \"cd client && npm start\"",
 		"install": "cd server && npm i && cd ../client && npm i",
 		"build": "cd client && npm run build",
@@ -14,7 +14,9 @@
 	"author": "",
 	"license": "ISC",
 	"devDependencies": {
+		"@types/node": "^20.14.2",
 		"concurrently": "^8.2.1",
+		"ts-node": "^10.9.2",
 		"typescript": "^5.4.5"
 	}
 }

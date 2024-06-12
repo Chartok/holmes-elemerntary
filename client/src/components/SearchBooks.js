@@ -40,7 +40,7 @@ function SearchBooks() {
           An error occurred: {error.message}
         </material_1.Alert>}
 
-        {(data === null || data === void 0 ? void 0 : data.searchBooks) && (<material_1.List>
+        {data?.searchBooks && (<material_1.List>
             {data.searchBooks.map((book) => (<material_1.ListItem key={book.bookId}>
                 <material_1.Link href={book.link}>
                   <img src={book.image} alt={book.title}/>

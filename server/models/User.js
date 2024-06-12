@@ -1,4 +1,3 @@
-"use strict";
 const { Schema, model } = require('mongoose');
 const book = require('./Book');
 const userSchema = new Schema({
@@ -36,3 +35,4 @@ const userSchema = new Schema({
     }
 });
 module.exports = model('User', userSchema);
+export {};

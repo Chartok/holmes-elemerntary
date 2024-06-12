@@ -143,65 +143,31 @@
 //     },
 // };
 
-import { IResolvers } from 'graphql-tools';
-import { ApolloError } from '@apollo/server';
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
 import axios from 'axios';
-import User from '../models/User';
-import Book from '../models/Book';
+import { GraphQLError } from 'graphql';
+import User from '../models/User.mjs';
+// import Book from '../models/Book';
 
-interface Context {
-	userId?: string;
-	user?: any;
-}
-
-interface UserArgs {
-	id: string;
-}
-
-interface RegisterInput {
-	username: string;
-	email: string;
-	password: string;
-}
-
-interface LoginInput {
-	email: string;
-	password: string;
-}
-
-interface BookInput {
-	bookId: string;
-	authors: string[];
-	description: string;
-	title: string;
-	image?: string;
-	link: string;
-}
-
-interface QueryArgs {
-	query: string;
-}
-
-const resolvers: IResolvers = {
+const resolvers = {
 	Query: {
-		user: async (_, { id }: UserArgs, context: Context) => {
+		user: async (_, { id }, context) => {
 			const user = await User.findById(id);
 			if (!user) {
-				throw new ApolloError('No user found with this id!');
+				throw new GraphQLError('No user found with this id!');
 			}
 			return user;
 		},
 
-		savedBooks: async (_, __, context: Context) => {
+		savedBooks: async (_, __, context) => {
 			const userId = context.userId;
 			const user = await User.findById(userId);
 
 			return user.savedBooks;
 		},
 
-		searchBooks: async (_, { query }: QueryArgs) => {
+		searchBooks: async (_, { query }) => {
 			const response = await axios.get(
 				'https://www.googleapis.com/books/v1/volumes',
 				{
@@ -215,7 +181,7 @@ const resolvers: IResolvers = {
 				throw new Error('No books found!');
 			}
 
-			const bookData = res.items.map((book: any) => ({
+			const bookData = res.items.map((book) => ({
 				bookId: book.id,
 				authors: book.volumeInfo.authors,
 				description: book.volumeInfo.description,
@@ -232,12 +198,10 @@ const resolvers: IResolvers = {
 		registerUser: async (
 			_,
 			{
-				registerInput: { username, email, password },
-			}: { registerInput: RegisterInput }
-		) => {
+				registerInput: { username, email, password } }) => {
 			const oldUser = await User.findOne({ email, username });
 			if (oldUser) {
-				throw new ApolloError(
+				throw new GraphQLError(
 					'User already exists with that email or username!'
 				);
 			}
@@ -260,12 +224,12 @@ const resolvers: IResolvers = {
 
 			const res = await newUser.save();
 
-			return { id: res.id, ...res._doc };
+			return { id: res.id, ...res.toObject()};
 		},
 
 		loginUser: async (
 			_,
-			{ loginInput: { email, password } }: { loginInput: LoginInput }
+			{ loginInput: { email, password } }
 		) => {
 			const user = await User.findOne({ email });
 
@@ -278,17 +242,15 @@ const resolvers: IResolvers = {
 
 				user.token = token;
 
-				return { id: user.id, ...user._doc };
+				return { id: user.id, ...user.toObject() };
 			} else {
-				throw new ApolloError('Incorrect email or password!');
+				throw new GraphQLError('Incorrect email or password!');
 			}
 		},
 
 		saveBook: async (
 			_,
-			{ book }: { book: BookInput },
-			context: Context
-		) => {
+			{ book }, context) => {
 			if (context.user) {
 				try {
 					const updatedUser = await User.findByIdAndUpdate(
@@ -298,15 +260,17 @@ const resolvers: IResolvers = {
 					);
 					return updatedUser;
 				} catch (err) {
-					throw new Error('Error saving book!');
+					throw new GraphQLError('Error saving book!');
+
 				}
 			}
-			throw new Error('You need to be logged in!');
+			throw new GraphQLError('You need to be logged in!');
+
 		},
 
 		removeBook: async (
 			_,
-			{ userId, bookId }: { userId: string; bookId: string }
+			{ userId, bookId }
 		) => {
 			const updatedUser = await User.findOneAndUpdate(
 				{ _id: userId },
@@ -315,7 +279,8 @@ const resolvers: IResolvers = {
 			);
 
 			if (!updatedUser) {
-				throw new Error('Could not remove book!');
+				throw new GraphQLError('Could not remove book!');
+
 			}
 
 			return updatedUser;
