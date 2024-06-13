@@ -1,0 +1,19 @@
+				"type": "#8e51ff",
+				"namespace": "#03eeff",
+				"function": "#c2d400",
+				"variable": "#0a9fa7",
+				"number": "#909eae",
+				"string": {
+					"foreground": "#14ba1c",
+				},
+				"comment": {
+					"foreground": "#546E7A",
+					"fontStyle": "italic"
+				},
+				"variable.readonly.defaultLibrary": "#A89F9B",
+				"macro": "#7E57C2",
+				"keyword": "#ea0303",
+				"operator": "#ffaa00",
+				"type.modification": "#0066ff",
+				"punctuation": "#ffffff"
+			}
